@@ -5,13 +5,8 @@ import CreateCard from './CreateCard/CreateCard'
 import EditCard from './EditCard/EditCard'
 import Table from './Table/Table'
 import Button from '../SharedElement/Button'
-import useCard from "../hooks/useCard"
 
-const Editor = ({
-    editID, setEditID, edit, setEdit
-}) => {
-
-    const { cards, setCards } = useCard()
+const Editor = () => {
 
     return (
         <div className='flex md:flex-nowrap mb-0 flex-wrap flex-col mt-4 md:mt-6 w-auto'>
@@ -23,36 +18,23 @@ const Editor = ({
                 {/* To create a card */}
                 {!edit &&
                     <div className='md:flex md:flex-col md:justify-center mx-auto'>
-                        <CreateCard
-                            cards={cards}
-                            setCards={setCards}
-                        />
+                        <CreateCard />
                     </div>
                 }
 
                 {/* To edit a card */}
                 {edit &&
                     <div className='md:flex md:flex-col md:justify-center mx-auto'>
-                        <EditCard
-                            cards={cards}
-                            setCards={setCards}
-                            editID={editID}
-                            setEditID={setEditID}
-                            setEdit={setEdit}
-                        />
+                        <EditCard />
                     </div>
                 }
 
                 {/* To view cards in tabular format */}
                 <div className='md:flex md:flex-col md:justify-center mt-7 mx-auto'>
-                    <Table
-                        cards={cards}
-                        setCards={setCards}
-                        setEditID={setEditID}
-                        setEdit={setEdit}
-                    />
+                    <Table />
                 </div>
             </div>
+            
             {/* To switch to viewer component */}
             <Link className='block mt-5 text-center mx-auto' to='/viewer'>
                 <Button title='Switch to viewer mode' />

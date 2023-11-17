@@ -5,8 +5,11 @@ import { Toaster, toast } from 'react-hot-toast'
 import Input from '../../SharedElement/Input'
 import Button from '../../SharedElement/Button'
 import Card from '../../SharedElement/Card'
+import useCard from '../../hooks/useCard'
 
-const EditCard = ({ cards, setCards, editID, setEditID, setEdit }) => {
+const EditCard = () => {
+
+  const { cards, setCards, editID, setEditID, setEdit } = useCard()
 
   const oldCard = cards.find(card => card.id === editID)
 

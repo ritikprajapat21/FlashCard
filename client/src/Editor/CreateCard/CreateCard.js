@@ -5,10 +5,20 @@ import { Toaster, toast } from 'react-hot-toast'
 import Input from '../../SharedElement/Input'
 import Button from '../../SharedElement/Button'
 import Card from '../../SharedElement/Card'
+import useCard from '../../hooks/useCard'
 
-const CreateCard = ({ cards, setCards }) => {
+const CreateCard = () => {
 
-  /** To create a card */
+  const { cards, setCards } = useCard()
+
+  /** To add a card */
+  const addCard = ({ front, back }) => {
+    const newCard = { id: (Math.random() * 100), front, back }
+    const newCardList = [...cards, newCard]
+    setCards(newCardList, console.log(cards))
+  }
+
+  /** To validate a card */
   const validateInput = (values, error = {}) => {
     if (!values.front)
       error.front = toast.error('Front input is required')
@@ -17,13 +27,6 @@ const CreateCard = ({ cards, setCards }) => {
       error.back = toast.error('Back input is required')
 
     return error
-  }
-
-  /** To add a card */
-  const addCard = ({ front, back }) => {
-    const newCard = { id: (Math.random() * 100), front, back }
-    const newCardList = [...cards, newCard]
-    setCards(newCardList, console.log(cards))
   }
 
   const formik = useFormik({

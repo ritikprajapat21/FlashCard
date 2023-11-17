@@ -4,8 +4,11 @@ import Row from "./Row/Row"
 import Button from "../../SharedElement/Button"
 import Card from "../../SharedElement/Card"
 import Data from "./Row/Data/Data"
+import useCard from '../../hooks/useCard'
 
-const Table = ({ cards, setCards, setEdit, setEditID }) => {
+const Table = () => {
+
+  const { cards, setCards, setEdit, setEditID } = useCard();
 
   /** If no cards */
   if (!cards || cards.length === 0) {

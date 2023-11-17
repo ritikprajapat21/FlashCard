@@ -12,17 +12,8 @@ import Missing from './Shared/Missing'
 
 export default function App() {
 
-  /** For cards */
-  const [cards, setCards] = useState()
-
   /** For user login */
   const [isLogin, setIsLogin] = useState(false)
-
-  /** To switch between create and edit card */
-  const [edit, setEdit] = useState(false)
-
-  /** For card editing */
-  const [editID, setEditID] = useState(null)
 
   return (
     <div className='flex flex-col h-screen justify-between'>
