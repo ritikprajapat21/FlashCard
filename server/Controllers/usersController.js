@@ -8,9 +8,13 @@ env.config()
 // To create user
 export const registerUser = async (req, res) => {
     const { name, email, password, mobile, profile } = req.body;
-    if (!email || !name || !password) return res.status(400).json({ 'message': 'Missing Data' })
+    console.log(req.body)
+    if (!email || !name || !password) return res.status(400).json({ 'message': 'Missing Data', name, email, password })
 
-    const hashPassword = await bcrypt.hash(password, "ritik")
+    const exists = await UserModel.findOne({ email }).exec()
+    if (exists) return res.status(409).json({ 'message': 'Email already taken' })
+
+    const hashPassword = await bcrypt.hash(password, 10)
 
     const result = await UserModel.create({
         name,
@@ -66,9 +70,9 @@ export const authenticateUser = async (req, res) => {
     foundUser.refreshToken = refreshToken
     foundUser.save()
 
-    res.cookies('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 })
+    res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 })
 
-    res.send(200).json({ user, accessToken })
+    res.json({ user, accessToken })
 }
 
 // To update user

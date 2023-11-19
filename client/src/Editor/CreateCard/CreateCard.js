@@ -15,7 +15,7 @@ const CreateCard = () => {
   const addCard = ({ front, back }) => {
     const newCard = { id: (Math.random() * 100), front, back }
     const newCardList = [...cards, newCard]
-    setCards(newCardList, console.log(cards))
+    setCards(newCardList)
   }
 
   /** To validate a card */

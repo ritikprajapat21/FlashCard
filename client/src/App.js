@@ -12,66 +12,35 @@ import Missing from './Shared/Missing'
 
 export default function App() {
 
-  /** For user login */
-  const [isLogin, setIsLogin] = useState(false)
-
   return (
     <div className='flex flex-col h-screen justify-between'>
+
       <Toaster position='top-center' reverseOrder={false}></Toaster>
+      
       <BrowserRouter>
-        <NavBar
-          isLogin={isLogin}
-        />
+
+        <NavBar />
+        
         <Routes>
 
           {/* For user to edit and create cards */}
-          <Route
-            path='/'
-            element={
-              <Editor
-                edit={edit}
-                setEdit={setEdit}
-                editID={editID}
-                setEditID={setEditID}
-              />
-            }
-          />
+          <Route path='/' element={<Editor />} />
 
           {/* To view cards */}
-          <Route
-            path='/viewer'
-            element={
-              <Viewer />
-            }
-          />
+          <Route path='/viewer' element={<Viewer />} />
 
           {/* For signup page */}
-          <Route
-            path='/signup'
-            element={
-              <SignUp
-                isLogin={isLogin}
-              />
-            }
-          />
+          <Route path='/signup' element={<SignUp />} />
 
           {/* For signin page */}
-          <Route
-            path='/signin'
-            element={
-              <SignIn
-                isLogin={isLogin}
-              />
-            }
-          />
+          <Route path='/signin' element={<SignIn />} />
 
-          <Route
-            path='*'
-            element={<Missing />}
-          />
+          <Route path='*' element={<Missing />} />
 
         </Routes>
+
         <Footer />
+        
       </BrowserRouter>
     </div>
   )

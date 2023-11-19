@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import CardContext from "../context/CardContext";
 
-export default () => {
+export default function useCard() {
     return useContext(CardContext)
 }

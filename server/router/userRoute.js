@@ -1,6 +1,6 @@
 import { Router } from "express"
-import { authenticateUser, changePassword, registerUser, updateUser } from "../Controllers/usersController"
-import { auth } from "../middlewares/auth"
+import { authenticateUser, changePassword, registerUser, updateUser } from "../Controllers/usersController.js"
+import { auth } from "../middlewares/auth.js"
 
 const router = Router()
 
@@ -34,6 +34,6 @@ router.route('/update').put(auth, updateUser)
 router.route('/change-password').put(auth, changePassword)
 
 /** To log user out */
-router.route('/logout').get(auth, logout)
+// router.route('/logout').get(auth, logout)
 
 export default router

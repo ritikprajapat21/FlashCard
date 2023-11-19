@@ -2,12 +2,47 @@ import React from 'react'
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import { useFormik } from 'formik'
 import { Toaster, toast } from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
 
 import Card from '../SharedElement/Card'
 import Input from '../SharedElement/Input'
 import Button from '../SharedElement/Button'
+import useAuth from '../hooks/useAuth'
+import axios from "../axios/axios"
 
-const SignUp = ({ isLogin }) => {
+const SignUp = () => {
+
+  const { isLogin } = useAuth()
+  const navigate = useNavigate()
+
+  const handleSubmit = ({ name, email, password }) => {
+    try {
+      const response = axios.post('/user/register',
+        { name, email, password }
+      )
+
+      toast.promise(response, {
+        loading: 'Creating user',
+        success: 'User Created',
+        error: `Email already taken`
+      })
+
+      response.then((data, err) => {
+        if (err) throw err;
+
+        navigate('/signin')
+      })
+    } catch (err) {
+      if (!err?.response) {
+        toast.error('No server response')
+      } else if (err.response?.status === 409) {
+        toast.error('Email already taken')
+      } else {
+        toast.error('Registration failed')
+      }
+      console.error(err)
+    }
+  }
 
   const validateSignUp = (values) => {
     const error = {}
@@ -34,16 +69,17 @@ const SignUp = ({ isLogin }) => {
 
   const formik = useFormik({
     initialValues: {
-      name: '',
-      email: '',
-      password: '',
-      rePassword: ''
+      name: 'Ritik Prajapat',
+      email: 'ritik@gmail.com',
+      password: 'Ritik@123',
+      rePassword: 'Ritik@123'
     },
     validate: validateSignUp,
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: (values) => {
       console.log(values)
+      handleSubmit(values)
       values.name = ''
       values.email = ''
       values.password = ''

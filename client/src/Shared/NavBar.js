@@ -4,13 +4,16 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 
 import logo from './flash-card.png'
+import useAuth from "../hooks/useAuth"
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 
-export default function NavBar({ isLogin }) {
+export default function NavBar() {
+
+  const { isLogin } = useAuth()
 
   const [navigation, setNavigation] = useState([
     { name: "Editor", href: "/", current: true },
