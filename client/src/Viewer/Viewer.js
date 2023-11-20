@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 import Button from "../SharedElement/Button";
 import ViewCard from "./ViewCard/ViewCard";
 import ToggleCard from "./ToggleCard/ToggleCard";
-import CardContext from "../context/CardContext";
+import useCard from "../hooks/useCard";
 
 const Viewer = () => {
 
-    const { cards } = CardContext();
+    const { cards } = useCard();
 
     const [index, setIndex] = useState(0)
 

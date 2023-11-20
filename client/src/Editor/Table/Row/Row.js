@@ -2,8 +2,11 @@ import React from 'react'
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline'
 
 import Data from './Data/Data'
+import useCard from '../../../hooks/useCard'
 
-const Row = ({ cards, setCards, setEditID, setEdit }) => {
+const Row = () => {
+    
+  const { cards, setCards, setEdit, setEditID } = useCard();
 
     const deleteCard = (id) => {
         const newList = cards.filter(card => card.id !== id)

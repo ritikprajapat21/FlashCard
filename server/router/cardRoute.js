@@ -7,7 +7,7 @@ const router = Router();
 
 
 /** See only public cards */
-router.route('/').get(getCards);
+router.route('/public').get(getCards);
 
 /** See all the flash cards and user must be authenticated 
  * params: username

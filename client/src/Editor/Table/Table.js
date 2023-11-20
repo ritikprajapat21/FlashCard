@@ -8,7 +8,7 @@ import useCard from '../../hooks/useCard'
 
 const Table = () => {
 
-  const { cards, setCards, setEdit, setEditID } = useCard();
+  const { cards } = useCard();
 
   /** If no cards */
   if (!cards || cards.length === 0) {
@@ -33,12 +33,7 @@ const Table = () => {
           </tr>
         </thead>
         <tbody>
-          <Row
-            cards={cards}
-            setCards={setCards}
-            setEdit={setEdit}
-            setEditID={setEditID}
-          />
+          <Row />
         </tbody>
         <tfoot>
           <tr>

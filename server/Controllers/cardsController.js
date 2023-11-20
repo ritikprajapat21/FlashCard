@@ -5,10 +5,11 @@ import CardModel from "../Model/Card.model.js";
 export const getCards = async (req, res) => {
     const result = await CardModel.find({ share: { $all: [true] } });
 
+    // console.log(JSON.parse(result))
     // No content available
     if (!result) return res.status(204).json({ message: "No card available" });
 
-    res.status(200).json({cards: result});
+    res.json({ cards: result });
 }
 
 export const getCreatedCards = async (req, res) => {

@@ -11,7 +11,7 @@ import axios from '../axios/axios'
 
 const SignIn = () => {
 
-  const { isLogin } = useAuth()
+  const { isLogin, setIsLogin, setAuth } = useAuth()
   const navigate = useNavigate()
   const from = useLocation() || '/'
 
@@ -27,18 +27,24 @@ const SignIn = () => {
       toast.promise(response, {
         loading: 'Verifying...',
         success: 'Verified',
-        error: 'Cannot verify...' < br > 'Check Credentials'
+        error: 'Cannot verify... Check Credentials!'
       })
 
-      response.then((data, err) => {
-        if (err) throw err
-
+      response.then((data) => {
         console.log(data)
+
+        setAuth({
+          email: data.email,
+          accessToken: data.accessToken
+        })
+
+        setIsLogin(true)
 
         // To navigate to editor or from user redirected
         from.pathname = from.pathname === '/signin' && '/'
         navigate(from, { replace: true })
-      })
+      }).catch((err) => { throw err })
+
     } catch (err) {
       if (!err?.response) {
         toast.error('No server response')

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 import CreateCard from './CreateCard/CreateCard'
@@ -9,7 +9,11 @@ import useCard from '../hooks/useCard'
 
 const Editor = () => {
 
-    const { edit } = useCard()
+    const { cards, edit } = useCard()
+
+    useEffect(() => {
+        return localStorage.setItem('cards', JSON.stringify(cards))
+    }, [])
 
     return (
         <div className='flex md:flex-nowrap mb-0 flex-wrap flex-col mt-4 md:mt-6 w-auto'>
