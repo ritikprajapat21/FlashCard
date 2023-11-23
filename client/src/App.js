@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 
@@ -9,39 +9,61 @@ import Footer from './Shared/Footer'
 import SignIn from './SignIn/SignIn'
 import SignUp from './SignUp/SignUp'
 import Missing from './Shared/Missing'
+import axios from './axios/axios'
+import useCard from './hooks/useCard'
 
 export default function App() {
+
+  const { setCards } = useCard()
+  const mounted = useRef(true)
+
+  useEffect(() => {
+
+    const fetchPublicCards = async () => {
+      try {
+        // Fetching public cards
+        const response = await axios.get('/card/public')
+        console.log(response.data.cards)
+
+        setCards(prev => prev ? [...prev, ...response.data.cards] : [...response.data.cards])
+
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    mounted.current && fetchPublicCards()
+
+    return () => mounted.current = false
+  }, [])
 
   return (
     <div className='flex flex-col h-screen justify-between'>
 
       <Toaster position='top-center' reverseOrder={false}></Toaster>
-      
-      <BrowserRouter>
 
-        <NavBar />
-        
-        <Routes>
+      <NavBar />
 
-          {/* For user to edit and create cards */}
-          <Route path='/' element={<Editor />} />
+      <Routes>
 
-          {/* To view cards */}
-          <Route path='/viewer' element={<Viewer />} />
+        {/* For user to edit and create cards */}
+        <Route path='/' element={<Editor />} />
 
-          {/* For signup page */}
-          <Route path='/signup' element={<SignUp />} />
+        {/* To view cards */}
+        <Route path='/viewer' element={<Viewer />} />
 
-          {/* For signin page */}
-          <Route path='/signin' element={<SignIn />} />
+        {/* For signup page */}
+        <Route path='/signup' element={<SignUp />} />
 
-          <Route path='*' element={<Missing />} />
+        {/* For signin page */}
+        <Route path='/signin' element={<SignIn />} />
 
-        </Routes>
+        <Route path='*' element={<Missing />} />
 
-        <Footer />
-        
-      </BrowserRouter>
+      </Routes>
+
+      <Footer />
+
     </div>
   )
 }

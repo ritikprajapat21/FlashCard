@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { createRef, useEffect } from 'react'
 import { useFormik } from 'formik'
 import { Toaster, toast } from 'react-hot-toast'
 
@@ -8,6 +8,12 @@ import Card from '../../SharedElement/Card'
 import useCard from '../../hooks/useCard'
 
 const EditCard = () => {
+
+  const front = createRef()
+
+  useEffect(() => {
+    front.current.focus()
+  }, [])
 
   const { cards, setCards, editID, setEditID, setEdit } = useCard()
 
@@ -24,12 +30,13 @@ const EditCard = () => {
     return error
   }
 
-  /** To */
+  /** To edit the card */
   const editCard = ({ front, back }) => {
+    // Creating the new card 
     const newCard = { ...oldCard, front, back }
-    console.log(newCard)
+    // Updating list
     const newCardList = cards.map(card => card.id === editID ? newCard : card)
-    console.log(newCardList)
+
     setCards(newCardList, console.log(cards))
   }
 
@@ -47,6 +54,7 @@ const EditCard = () => {
       values.back = ''
       setEdit(false)
       setEditID(null)
+      return values
     }
   })
 
@@ -58,6 +66,7 @@ const EditCard = () => {
         <form onSubmit={formik.handleSubmit}>
           <Input
             type='text'
+            ref={front}
             className='p-4 m-4'
             {...formik.getFieldProps('front')}
             placeholder='Enter front of the card'

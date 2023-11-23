@@ -23,13 +23,13 @@ export default function NavBar() {
     { name: !isLogin ? "Sign up" : null, href: "/signup", current: false },
   ])
 
+  const href = window.location.pathname
   useEffect(() => {
-    const href = window.location.pathname
 
     const newNavigation = navigation.map(nav => nav.href === href ? { ...nav, current: true } : { ...nav, current: false })
 
     setNavigation([...newNavigation])
-  }, [isLogin])
+  }, [isLogin, href])
 
   const handleFocus = item => {
     const newNavigation = navigation.map(nav => nav.name === item.name ? { ...nav, current: true } : { ...nav, current: false })

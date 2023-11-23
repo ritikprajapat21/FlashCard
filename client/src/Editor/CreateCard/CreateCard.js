@@ -1,30 +1,40 @@
-import React from 'react'
+import React, { createRef } from 'react'
 import { useFormik } from 'formik'
 import { Toaster, toast } from 'react-hot-toast'
+import { v4 as uuid } from "uuid"
 
 import Input from '../../SharedElement/Input'
 import Button from '../../SharedElement/Button'
 import Card from '../../SharedElement/Card'
 import useCard from '../../hooks/useCard'
+import useAuth from '../../hooks/useAuth'
 
 const CreateCard = () => {
 
+  const front = createRef()
+  const back = createRef()
+
   const { cards, setCards } = useCard()
+  const { auth } = useAuth()
 
   /** To add a card */
   const addCard = ({ front, back }) => {
-    const newCard = { id: (Math.random() * 100), front, back }
-    const newCardList = [...cards, newCard]
-    setCards(newCardList)
+    console.log(cards)
+    const newCard = { id: uuid(), front, back, createdBy: auth?.email, share: false, new: true }
+    setCards(prev => prev?.length ? [...prev, newCard] : [newCard])
   }
 
   /** To validate a card */
   const validateInput = (values, error = {}) => {
-    if (!values.front)
+    if (!values.front) {
       error.front = toast.error('Front input is required')
+      front.current.focus()
+    }
 
-    if (!values.back)
+    if (!values.back) {
       error.back = toast.error('Back input is required')
+      back.current.focus()
+    }
 
     return error
   }
@@ -39,6 +49,7 @@ const CreateCard = () => {
     validate: validateInput,
     onSubmit: (values) => {
       addCard(values)
+      front.current.focus()
       values.front = ''
       values.back = ''
     }
@@ -52,12 +63,14 @@ const CreateCard = () => {
         <form onSubmit={formik.handleSubmit}>
           <Input
             type='text'
+            ref={front}
             className='p-4 m-4'
             {...formik.getFieldProps('front')}
             placeholder='Front of the card'
           />
 
           <Input
+            ref={back}
             type='text'
             className='p-4 m-4'
             {...formik.getFieldProps('back')}

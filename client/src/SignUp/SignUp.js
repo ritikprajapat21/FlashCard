@@ -16,32 +16,32 @@ const SignUp = () => {
   const navigate = useNavigate()
 
   const handleSubmit = ({ name, email, password }) => {
-    try {
-      const response = axios.post('/user/register',
-        { name, email, password }
-      )
 
-      toast.promise(response, {
-        loading: 'Creating user',
-        success: 'User Created',
-        error: `Email already taken`
-      })
+    const response = axios.post('/user/register',
+      { name, email, password }
+    )
 
-      response.then((data, err) => {
-        if (err) throw err;
+    toast.promise(response, {
+      loading: 'Creating user',
+      success: (data) => {
+        console.log(data)
 
         navigate('/signin')
-      })
-    } catch (err) {
-      if (!err?.response) {
-        toast.error('No server response')
-      } else if (err.response?.status === 409) {
-        toast.error('Email already taken')
-      } else {
-        toast.error('Registration failed')
+
+        return <p>User Created</p>
+      },
+      error: (err) => {
+        if (!err?.response) {
+          return 'No server response'
+        } else if (err.response?.status === 409) {
+          return 'Email already taken'
+        } else {
+          return 'Registration failed'
+        }
+        console.error(err)
       }
-      console.error(err)
-    }
+    })
+
   }
 
   const validateSignUp = (values) => {

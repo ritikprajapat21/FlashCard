@@ -3,10 +3,12 @@ import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline'
 
 import Data from './Data/Data'
 import useCard from '../../../hooks/useCard'
+import useAuth from '../../../hooks/useAuth'
 
 const Row = () => {
-    
-  const { cards, setCards, setEdit, setEditID } = useCard();
+
+    const { cards, setCards, setEdit, setEditID } = useCard()
+    const { auth } = useAuth()
 
     const deleteCard = (id) => {
         const newList = cards.filter(card => card.id !== id)
@@ -14,9 +16,8 @@ const Row = () => {
     }
 
     const setPublic = (id) => {
-        const newList = cards.map(card => (card.id === id) ? { ...card, public: !card.public } : card)
+        const newList = cards.map(card => (card.id === id) ? { ...card, share: !card.public } : card)
         setCards([...newList])
-        console.log(newList)
     }
 
     const rows = cards.map(card => <tr key={card.id}>
@@ -47,14 +48,17 @@ const Row = () => {
         <Data>
             <input
                 type='checkbox'
-                defaultChecked={card.public}
+                defaultChecked={card.share}
                 className='cursor-pointer'
                 onChange={() => setPublic(card.id)}
             />
         </Data>
-    </tr>)
+        <Data>
+            {card?.createdBy !== auth.email ? card?.createdBy : 'You'}
+        </Data>
+    </tr >)
 
-    return rows
+return rows
 
 }
 

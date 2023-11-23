@@ -12,7 +12,7 @@ router.route('/public').get(getCards);
 /** See all the flash cards and user must be authenticated 
  * params: username
  */
-router.route('/:username').get(auth, getCreatedCards);
+router.route('/:email').get(auth, getCreatedCards);
 
 /** Save the flash cards and user must be authenticated 
  * /save

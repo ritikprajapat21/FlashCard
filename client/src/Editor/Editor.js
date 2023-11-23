@@ -6,13 +6,21 @@ import EditCard from './EditCard/EditCard'
 import Table from './Table/Table'
 import Button from '../SharedElement/Button'
 import useCard from '../hooks/useCard'
+import useAuth from '../hooks/useAuth'
 
 const Editor = () => {
 
-    const { cards, edit } = useCard()
+    const { auth } = useAuth()
+    const { cards, setCards, edit } = useCard()
 
     useEffect(() => {
-        return localStorage.setItem('cards', JSON.stringify(cards))
+
+        const setCreatedBy = () => {
+            setCards(prev => prev?.map(card => card?.createdBy ? card : { ...card, createdBy: auth?.email }), console.log(cards))
+        }
+
+        setCreatedBy()
+
     }, [])
 
     return (

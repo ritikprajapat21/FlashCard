@@ -5,10 +5,11 @@ import Button from "../../SharedElement/Button"
 import Card from "../../SharedElement/Card"
 import Data from "./Row/Data/Data"
 import useCard from '../../hooks/useCard'
+import useAuth from '../../hooks/useAuth'
 
 const Table = () => {
 
-  const { cards } = useCard();
+  const { cards, postCards } = useCard()
 
   /** If no cards */
   if (!cards || cards.length === 0) {
@@ -22,7 +23,7 @@ const Table = () => {
   }
 
   return (
-    <Card className='md:h-2/3 bg-transparent lg:h-80 md:overflow-auto'>
+    <Card className='bg-transparent lg:h-80 md:overflow-auto'>
       <table className='table-fixed bg-transparent border-slate-500 border-collapse'>
         <thead>
           <tr>
@@ -30,6 +31,7 @@ const Table = () => {
             <Data className='font-semibold text-lg'>Back of the card</Data>
             <Data className='font-semibold text-lg'>Action</Data>
             <Data className='font-semibold text-lg'>Want to make public?</Data>
+            <Data className='font-semibold text-lg'>Created by</Data>
           </tr>
         </thead>
         <tbody>
@@ -37,8 +39,8 @@ const Table = () => {
         </tbody>
         <tfoot>
           <tr>
-            <Data className='p-2' colSpan={4}>
-              <Button title='Save Cards' />
+            <Data className='p-2' colSpan={5}>
+              <Button onClick={postCards} title='Save Cards' />
             </Data>
           </tr>
         </tfoot>

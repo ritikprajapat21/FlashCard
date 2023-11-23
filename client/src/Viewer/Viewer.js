@@ -5,6 +5,7 @@ import Button from "../SharedElement/Button";
 import ViewCard from "./ViewCard/ViewCard";
 import ToggleCard from "./ToggleCard/ToggleCard";
 import useCard from "../hooks/useCard";
+import Card from "../SharedElement/Card";
 
 const Viewer = () => {
 
@@ -23,6 +24,20 @@ const Viewer = () => {
             return setIndex(cards.length - 1)
         setIndex(index - 1)
     }
+
+    console.log(cards.length)
+    if (cards.length === 0) {
+        return <div className="flex flex-col items-center justify-center mt-5 h-auto">
+            <Card className='flex flex-col items-center justify-center mb-6 md:mb-6 w-52 h-52 md:w-56 md:h-56 text-center'>
+                <p className="m-2">No cards available</p>
+                <p className="mt-[4px] mb-[10px]">Create some cards...</p>
+                <Link to='/'>
+                    <Button>Create Card</Button>
+                </Link>
+            </Card>
+        </div>
+    }
+
 
     return (
         <div className="w-full h-2/4 md:h-auto mt-4">

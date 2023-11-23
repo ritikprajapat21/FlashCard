@@ -1,8 +1,9 @@
 import React from 'react'
 
-const Input = ({ type, placeholder, className, ...rest }) => {
+const Input = React.forwardRef(({ type, placeholder, className, ...rest }, ref) => {
     return (
         <input
+            ref={ref}
             type={type}
             autoComplete='off'
             {...rest}
@@ -10,6 +11,6 @@ const Input = ({ type, placeholder, className, ...rest }) => {
             placeholder={placeholder}
         />
     )
-}
+})
 
 export default Input

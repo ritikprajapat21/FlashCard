@@ -16,26 +16,22 @@ const SignIn = () => {
   const from = useLocation() || '/'
 
   const handleSubmit = ({ email, password }) => {
-    try {
-      const response = axios.post('/user/auth',
-        { email, password },
-        {
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true
-        })
+    const err = {}
 
-      toast.promise(response, {
-        loading: 'Verifying...',
-        success: 'Verified',
-        error: 'Cannot verify... Check Credentials!'
+    const response = axios.post('/user/auth',
+      { email, password },
+      {
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true
       })
 
-      response.then((data) => {
-        console.log(data)
+    toast.promise(response, {
+      loading: 'Verifying...',
+      success: (res) => {
 
         setAuth({
-          email: data.email,
-          accessToken: data.accessToken
+          email: res.data.user.email,
+          accessToken: res.data.accessToken
         })
 
         setIsLogin(true)
@@ -43,20 +39,30 @@ const SignIn = () => {
         // To navigate to editor or from user redirected
         from.pathname = from.pathname === '/signin' && '/'
         navigate(from, { replace: true })
-      }).catch((err) => { throw err })
 
-    } catch (err) {
-      if (!err?.response) {
-        toast.error('No server response')
-      } else if (err.response?.status === 404) {
-        toast.error('Username does not exist')
-      } else if (err.response?.status === 400) {
-        toast.error('Password does not match')
-      } else {
-        toast.error('Authentication failed')
+        return "Verified"
+      },
+      error: (err) => {
+        if (!err?.response) {
+          toast.error('No server response')
+        } else if (err.response?.status === 404) {
+          toast.error('Username does not exist')
+          err.email = ''
+          err.password = ''
+        } else if (err.response?.status === 400) {
+          toast.error('Password does not match')
+          err.password = ''
+        } else {
+          toast.error('Authentication failed')
+        }
+
+        return <p>Cannot verify... <br />Check Credentials!</p>
       }
-    }
+    })
+
+    return err
   }
+
 
   const validateSignIn = (values) => {
     const error = {}
@@ -64,7 +70,6 @@ const SignIn = () => {
 
     if (!values.email) {
       error.email = toast.error(<b>Email required!</b>)
-      values.email = ''
     } else if (!emailre.test(values.email)) {
       error.email = toast.error(<b>Invalid email!</b>)
       values.email = ''
@@ -89,12 +94,7 @@ const SignIn = () => {
     validateOnBlur: false,
     validateOnChange: false,
     validate: validateSignIn,
-    onSubmit: (values) => {
-      console.log(values)
-      handleSubmit(values)
-      values.email = ''
-      values.password = ''
-    }
+    onSubmit: (values) => handleSubmit(values)
   })
 
   if (isLogin) {

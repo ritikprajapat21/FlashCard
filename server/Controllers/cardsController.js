@@ -1,4 +1,5 @@
 import CardModel from "../Model/Card.model.js";
+import mongoose from "mongoose";
 
 
 /** To get cards by unauthorized person */
@@ -13,11 +14,11 @@ export const getCards = async (req, res) => {
 }
 
 export const getCreatedCards = async (req, res) => {
-    const { username } = req.params;
+    const { email } = req.params;
 
-    if (!username) return res.status(400).json({ message: "Username is required" });
+    if (!email) return res.status(400).json({ message: "Username is required" });
 
-    const cards = await CardModel.find({ createdBy: { $all: [username] } });
+    const cards = await CardModel.find({ createdBy: { $all: [email] } });
 
     // No card available 
     if (!cards) return res.status(204).json({ message: "No card available" });
@@ -26,17 +27,23 @@ export const getCreatedCards = async (req, res) => {
 }
 
 export const saveCard = async (req, res) => {
-    const { front, back, createdBy, share } = req.body;
+    const { cards } = req.body;
 
-    if (!front || !back || !createdBy) return res.status(400).send("Front, back and created by are required")
+    if (!cards) return res.status(400).send("Cards are required")
 
-    const result = await CardModel.create({
-        front,
-        back,
-        createdBy,
-        share: share || false
-    })
+    const setId = (card) => {
+        return {
+            ...card,
+            id: new mongoose.Types.ObjectId()
+        }
+    }
+    const newCards = cards.map(setId)
 
+    console.log(cards)
+
+    const result = await CardModel.create(newCards)
+
+    console.log(result)
     if (!result) return res.status(500).send("Internal error")
 
     return res.status(201).json({ 'message': 'Card created' })
