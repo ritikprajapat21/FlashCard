@@ -54,7 +54,7 @@ const Row = () => {
             />
         </Data>
         <Data>
-            {card?.createdBy !== auth.email ? card?.createdBy : 'You'}
+            {card?.createdBy !== auth?.email ? card?.createdBy : 'You'}
         </Data>
     </tr >)
 

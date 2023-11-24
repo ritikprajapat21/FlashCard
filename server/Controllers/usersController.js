@@ -43,7 +43,7 @@ export const authenticateUser = async (req, res) => {
 
     if (!match) return res.status(400).json({ 'message': 'Password not match' })
 
-    const { password, ...user } = foundUser.toJSON()
+    const { password, refreshToken, ...user } = foundUser.toJSON()
 
     const accessToken = jwt.sign(
         {
@@ -56,7 +56,7 @@ export const authenticateUser = async (req, res) => {
         }
     )
 
-    const refreshToken = jwt.sign(
+    const rToken = jwt.sign(
         {
             userID: user._id,
             email: user.email
@@ -67,7 +67,7 @@ export const authenticateUser = async (req, res) => {
         }
     )
 
-    foundUser.refreshToken = refreshToken
+    foundUser.refreshToken = rToken
     foundUser.save()
 
     res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 })

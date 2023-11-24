@@ -1,10 +1,12 @@
 import { Fragment, useState, useEffect } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import toast from "react-hot-toast"
 
 import logo from './flash-card.png'
 import useAuth from "../hooks/useAuth"
+import axios from "../axios/axios"
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -13,27 +15,64 @@ function classNames(...classes) {
 
 export default function NavBar() {
 
-  const { isLogin } = useAuth()
+  const { isLogin, setIsLogin, auth, setAuth } = useAuth()
 
   const [navigation, setNavigation] = useState([
-    { name: "Editor", href: "/", current: true },
-    { name: "Viewer", href: "/viewer", current: false },
-    { name: !isLogin ? "Log In" : null, href: "/signin", current: false },
-    { name: isLogin ? "Sign Out" : null, href: "/logout", current: false },
-    { name: !isLogin ? "Sign up" : null, href: "/signup", current: false },
+    { name: "Editor", href: "/", current: true, login: true },
+    { name: "Viewer", href: "/viewer", current: false, login: true },
+    { name: "Log In", href: "/signin", current: false, login: true },
+    // { name: "Sign Out", href: "/", current: false, login: isLogin },
+    { name: "Sign Up", href: "/signup", current: false, login: true },
   ])
 
-  const href = window.location.pathname
+  const href = useLocation()
   useEffect(() => {
+    console.log(navigation)
 
     const newNavigation = navigation.map(nav => nav.href === href ? { ...nav, current: true } : { ...nav, current: false })
 
     setNavigation([...newNavigation])
-  }, [isLogin, href])
+
+  }, [href])
+
+  useEffect(() => {
+
+    const newNav = () => {
+      const newLinks = navigation.map(nav => (nav.name === "Log In" || nav.name === "Sign Up")
+        ? isLogin
+          ? { ...nav, login: false }
+          : { ...nav, login: true }
+        : nav)
+
+      setNavigation([...newLinks])
+    }
+
+    newNav()
+
+  }, [isLogin])
 
   const handleFocus = item => {
     const newNavigation = navigation.map(nav => nav.name === item.name ? { ...nav, current: true } : { ...nav, current: false })
     setNavigation([...newNavigation])
+  }
+
+  const getInitials = () => {
+    const initials = auth?.name?.split(' ').filter(word => word !== ' ' && word !== "")
+    const char = initials?.map(word => word.charAt(0)).join('').toUpperCase()
+    return char
+  }
+
+  const handleLogout = async () => {
+    setAuth({})
+    setIsLogin(prev => !prev)
+    try {
+      const response = await axios('/user/logout', {
+        withCredentials: true
+      })
+      if (response) toast.success('Logout Successful')
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   return (
@@ -65,7 +104,7 @@ export default function NavBar() {
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      item.name !== null &&
+                      item.login &&
                       <Link
                         key={item.name}
                         to={item.href}
@@ -102,11 +141,14 @@ export default function NavBar() {
                       <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                         <span className="absolute -inset-1.5" />
                         <span className="sr-only">Open user menu</span>
-                        <img
+                        {/* <img
                           className="h-8 w-8 rounded-full"
                           src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                           alt=""
-                        />
+                        /> */}
+                        <div className="rounded-full p-2 bg-[white] font-bold">
+                          <span>{isLogin && getInitials()}</span>
+                        </div>
                       </Menu.Button>
                     </div>
                     <Transition
@@ -132,23 +174,11 @@ export default function NavBar() {
                             </Link>
                           )}
                         </Menu.Item>
-                        {/* <Menu.Item>
-                        {({ active }) => (
-                          <Link
-                            to="#"
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
-                            )}
-                          >
-                            Settings
-                          </Link>
-                        )}
-                      </Menu.Item> */}
                         <Menu.Item>
                           {({ active }) => (
                             <Link
-                              to="#"
+                              to="/"
+                              onClick={handleLogout}
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"

@@ -31,10 +31,11 @@ const SignIn = () => {
 
         setAuth({
           email: res.data.user.email,
+          name: res.data.user.name,
           accessToken: res.data.accessToken
         })
 
-        setIsLogin(true)
+        setIsLogin(prev => !prev)
 
         // To navigate to editor or from user redirected
         from.pathname = from.pathname === '/signin' && '/'
