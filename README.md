@@ -25,13 +25,13 @@ This is an application that let's you create flash cards.
 
 ## Screenshots
 
-![Editor](image.png)
+![Editor](client/src/images/image.png)
 
-![Viewer](image-1.png)
+![Viewer](client/src/images/image-1.png)
 
-![Sign Up](image-2.png)
+![Sign Up](client/src/images/image-2.png)
 
-![Sign In](image-3.png)
+![Sign In](client/src/images/image-3.png)
 
 
 ## Run Locally
