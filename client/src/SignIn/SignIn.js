@@ -28,10 +28,10 @@ const SignIn = () => {
     toast.promise(response, {
       loading: 'Verifying...',
       success: (res) => {
-
         setAuth({
           email: res.data.user.email,
           name: res.data.user.name,
+          mobile: res.data.user.mobile,
           accessToken: res.data.accessToken
         })
 
@@ -89,8 +89,8 @@ const SignIn = () => {
 
   const formik = useFormik({
     initialValues: {
-      email: 'ritiks@gmail.com',
-      password: 'Ritik@123',
+      email: '',
+      password: '',
     },
     validateOnBlur: false,
     validateOnChange: false,

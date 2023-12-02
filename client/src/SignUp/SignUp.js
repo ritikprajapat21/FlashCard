@@ -69,10 +69,10 @@ const SignUp = () => {
 
   const formik = useFormik({
     initialValues: {
-      name: 'Ritik Prajapat',
-      email: 'ritik@gmail.com',
-      password: 'Ritik@123',
-      rePassword: 'Ritik@123'
+      name: '',
+      email: '',
+      password: '',
+      rePassword: ''
     },
     validate: validateSignUp,
     validateOnBlur: false,

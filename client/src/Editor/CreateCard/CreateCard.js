@@ -20,7 +20,7 @@ const CreateCard = () => {
   /** To add a card */
   const addCard = ({ front, back }) => {
     console.log(cards)
-    const newCard = { id: uuid(), front, back, createdBy: auth?.email, share: false, new: true }
+    const newCard = { id: uuid().toString(), front, back, createdBy: auth?.email, share: false, new: true, edited: false }
     setCards(prev => prev?.length ? [...prev, newCard] : [newCard])
   }
 

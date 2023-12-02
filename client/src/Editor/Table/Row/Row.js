@@ -16,7 +16,7 @@ const Row = () => {
     }
 
     const setPublic = (id) => {
-        const newList = cards.map(card => (card.id === id) ? { ...card, share: !card.public } : card)
+        const newList = cards.map(card => (card.id === id) ? { ...card, share: !card.public, edited: true, createdBy: auth?.email } : card)
         setCards([...newList])
     }
 

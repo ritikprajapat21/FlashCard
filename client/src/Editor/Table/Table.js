@@ -5,7 +5,6 @@ import Button from "../../SharedElement/Button"
 import Card from "../../SharedElement/Card"
 import Data from "./Row/Data/Data"
 import useCard from '../../hooks/useCard'
-import useAuth from '../../hooks/useAuth'
 
 const Table = () => {
 

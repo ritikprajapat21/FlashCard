@@ -33,7 +33,7 @@ const EditCard = () => {
   /** To edit the card */
   const editCard = ({ front, back }) => {
     // Creating the new card 
-    const newCard = { ...oldCard, front, back }
+    const newCard = { ...oldCard, front, back, edited: true }
     // Updating list
     const newCardList = cards.map(card => card.id === editID ? newCard : card)
 

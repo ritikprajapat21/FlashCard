@@ -27,9 +27,9 @@ export const getCreatedCards = async (req, res) => {
 }
 
 export const saveCard = async (req, res) => {
-    const { cards } = req.body;
+    let { newCards, editedCards } = req.body;
 
-    if (!cards) return res.status(400).send("Cards are required")
+    if (!newCards) return res.status(400).send("Cards are required")
 
     const setId = (card) => {
         return {
@@ -37,11 +37,14 @@ export const saveCard = async (req, res) => {
             id: new mongoose.Types.ObjectId()
         }
     }
-    const newCards = cards.map(setId)
 
-    console.log(cards)
+    newCards = newCards.map(setId)
+    editedCards = newCards.map(setId)
+
+    console.log(newCards, editedCards)
 
     const result = await CardModel.create(newCards)
+    const result2 = editedCards.map(async card => await CardModel.updateOne({ id: card.id }, { $set: { ...card } }))
 
     console.log(result)
     if (!result) return res.status(500).send("Internal error")

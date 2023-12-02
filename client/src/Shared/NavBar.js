@@ -21,7 +21,6 @@ export default function NavBar() {
     { name: "Editor", href: "/", current: true, login: true },
     { name: "Viewer", href: "/viewer", current: false, login: true },
     { name: "Log In", href: "/signin", current: false, login: true },
-    // { name: "Sign Out", href: "/", current: false, login: isLogin },
     { name: "Sign Up", href: "/signup", current: false, login: true },
   ])
 
@@ -59,6 +58,10 @@ export default function NavBar() {
   const getInitials = () => {
     const initials = auth?.name?.split(' ').filter(word => word !== ' ' && word !== "")
     const char = initials?.map(word => word.charAt(0)).join('').toUpperCase()
+    // setAuth(prev => {
+    //   ...prev,
+    //   initials: char
+    // })
     return char
   }
 
@@ -164,7 +167,7 @@ export default function NavBar() {
                         <Menu.Item>
                           {({ active }) => (
                             <Link
-                              to="#"
+                              to="/profile"
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"

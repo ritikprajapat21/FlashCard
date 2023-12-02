@@ -25,7 +25,7 @@ router.route('/auth').post(authenticateUser)
  * @param name
  * @param profile
  */
-router.route('/update').put(auth, updateUser)
+router.route('/update/:email').put(auth, updateUser)
 
 /** To change password 
  * @param oldPassword

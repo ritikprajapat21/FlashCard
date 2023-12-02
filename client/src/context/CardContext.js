@@ -22,17 +22,31 @@ export const CardProvider = ({ children }) => {
 
     const postCards = () => {
         if (isLogin) {
-            const newCards = cards.filter(card => card.new)
+            const newCards = cards.filter(card => card.new).map(card =>{ 
+                return {
+                    front: card.front, 
+                    back: card.back, 
+                    createdBy: card.createdBy,
+                    share: true,
+                }
+            })
+            console.log("new cards:", newCards)
 
-            const response = axios.post('/card/save', { cards: newCards, email: auth?.email })
+            
+            const editedCards = cards.filter(card => card.edited && !card.new)
+            console.log("edited cards:", editedCards)
+
+            const response = axios.post('/card/save', { newCards, editedCards, email: auth?.email })
 
             toast.promise(response, {
                 loading: 'Saving Created Cards....',
-                success: (data) => {
-                    console.log(data.message)
+                success: (res) => {
+                    console.log(res.data.message)
+                    return "Cards Saved"
                 },
                 error: (err) => {
                     console.log(err)
+                    return "Create new cards or edit existing ones"
                 }
             })
         } else {

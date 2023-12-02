@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
+import "./App.css"
 
 import Editor from './Editor/Editor'
 import Viewer from './Viewer/Viewer'
@@ -8,6 +9,7 @@ import NavBar from './Shared/NavBar'
 import Footer from './Shared/Footer'
 import SignIn from './SignIn/SignIn'
 import SignUp from './SignUp/SignUp'
+import Profile from './Profile/Profile'
 import Missing from './Shared/Missing'
 import axios from './axios/axios'
 import useCard from './hooks/useCard'
@@ -57,6 +59,8 @@ export default function App() {
 
         {/* For signin page */}
         <Route path='/signin' element={<SignIn />} />
+
+        <Route path='/profile' element={<Profile />} />
 
         <Route path='*' element={<Missing />} />
 

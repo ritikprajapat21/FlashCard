@@ -77,7 +77,8 @@ export const authenticateUser = async (req, res) => {
 
 // To update user
 export const updateUser = async (req, res) => {
-    const { email, name, mobile, profile } = req.body
+    const { email } = req.params
+    const { name, mobile, profile } = req.body
 
     if (!email) res.status(400).json({ 'message': 'Email Required' })
 
